@@ -1,6 +1,13 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+
 resources:
   - service.yaml
   - deployment.yaml
+
 namespace: default
+
+images:
+  - name: backend
+    newName: 975879576846.dkr.ecr.us-east-1.amazonaws.com/backend
+    newTag: 59823e6f5c540af5124cef683b1e0e8bf6dd627d
