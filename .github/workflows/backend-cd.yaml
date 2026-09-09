@@ -123,15 +123,20 @@ jobs:
           sed -i "s#newTag:.*#newTag: $IMAGE_TAG#" kustomization.yaml
           kubectl apply -k .
 
-      - name: Verify Kubernetes deployment
+      - name: Verify Kubernetes rollout
         run: |
           kubectl rollout status deployment/backend --timeout=180s
+
+      - name: Collect Kubernetes deployment evidence
+        if: always()
+        run: |
           echo "----- Logging - kubectl get all -----"
           kubectl get all
           echo "----- Logging - kubectl describe deploy -----"
           kubectl describe deploy backend
 
       - name: Verify Backend ECR image
+        if: always()
         run: |
           echo "----- Logging - Backend ECR Image Details -----"
           AWS_PAGER="" aws ecr describe-images \
